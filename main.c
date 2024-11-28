@@ -2,28 +2,25 @@
 #include <dirent.h>
 #include <string.h>
 #include <Windows.h>
+#include <stdlib.h>
 
-#define EXT ".c"
-#define ELEN 2
+#include "interface.c"
+#include "terminal.c"
 
-enum User {
-    superuser, loh
-};
 
-int main() {
+
+
+
+
+int main(int args, char * argv) {
     system("cls");
-    DIR * dp = opendir(".");
-    if ( ! dp ) {
-        fprintf(stderr, "Can't open current directory!\n");
-        return 1;
-    }
-    struct dirent * de;
-    de->d_reclen
-    while ( ( de = readdir(dp) ) ) {
-        if(de->d_name[0] == '.') continue;
-        // size_t nlen = strlen(de->d_name);
-        // if ( nlen > ELEN && strcmp((de->d_name) + nlen - ELEN, ".") != 0 )
-        printf("%s\n", de->d_name);
-    }
-    closedir(dp);
+    char pBuf[512] = {0};
+    size_t len = sizeof(pBuf);
+    char * ptr = pBuf;
+    GetModuleFileName(NULL, pBuf, len);
+    remove_last_file(pBuf);
+    Folder *fd = init_folder(pBuf);
+    print_directory(fd);
+    destroy_folder(fd);
+    printf("Fufayka\n");
 }
