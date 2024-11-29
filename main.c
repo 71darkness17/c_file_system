@@ -17,7 +17,6 @@ void processing() {
         print_brackets(fd, index);
         c = getch();
         remove_brackets(fd, index);
-        printf("\ncurrent path - %s\n", fd->path);
         switch (c) {
             case 27: {
                 flag--; break;
@@ -31,7 +30,14 @@ void processing() {
             }
             case 13: {
                 if ((fd->files + index)->type == FOLDER) fd = reopen(fd, &index);
-                else if ((fd->files + index)->type == TXT); // Вова, я жду... 
+                else if ((fd->files + index)->type == C_FILE) {
+                    add_file_to_path(fd->path, (fd->files + index)->name, (fd->files + index)->name_length);
+                    execute(fd->path);
+                    remove_last_file(fd->path);
+                    system("cls");
+                    print_directory(fd);
+                    index = 0;
+                } 
                 break;
             }
         }

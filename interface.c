@@ -7,6 +7,7 @@ FileType check_extension(Folder * fd, File * f) {
         f->name[end - 1] == 'x' && f->name[end - 2] == 't' && f->name[end - 3] == '.') return TXT;
     else if (end == 1 && f->name[end] == '.' && f->name[end - 1] == '.') return FOLDER;
     else if (end == 0 && f->name[end] == '.') return FOLDER; 
+    else if (f->name[end] == 'c' && f->name[end - 1] == '.') return C_FILE;
     add_file_to_path(fd->path, f->name, f->name_length);
     DIR * dr = opendir(fd->path);
     remove_last_file(fd->path);
@@ -80,6 +81,9 @@ void print_directory(Folder * fd) {
                 set_console_color(GREEN);
                 break;
             }
+            case C_FILE: {
+                set_console_color(RED); break;
+            }
         }
         printf(" %s", (fd->files + i)->name);
         // if ((fd->files + i)->type == TXT) printf(" TXT FILEEEEEEEE");
@@ -116,4 +120,32 @@ void add_file_to_path(char * path, char * name, int name_len) {
         path[index] = name[i];
     }
     //printf("\nadded - %s\n", path);
+}
+
+void execute(char * path) {
+    system("cls");
+    char * command = (char *) malloc (512 * sizeof(char));
+    for (int i = 0; i != 512; ++i) {
+        command[i] = '\0';
+    }
+    char first_part[] = "gcc ";
+    int index = 0;
+    for ( ; index != 4; ++index) {
+        command[index] = first_part[index];
+    }
+    for ( ;path[index - 4] != '\0'; ++index) {
+        command[index] = path[index - 4];
+    }
+    char second_part[] = " -o tmp.exe";
+    for (int i = 0; i != 11; ++i) {
+        command[index] = second_part[i];
+        index++;
+    }
+    system(command);
+    free(command);
+    system("tmp.exe");
+    set_console_color(CYAN);
+    printf("\nPress any key to quit\n");
+    system("del tmp.exe");
+    getch();
 }

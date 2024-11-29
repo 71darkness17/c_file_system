@@ -9,7 +9,7 @@
 #define NUM_FILES 100
 
 typedef enum {
-    TXT, FOLDER, OTHER
+    TXT, FOLDER, C_FILE, OTHER
 } FileType;
 
 typedef struct {
