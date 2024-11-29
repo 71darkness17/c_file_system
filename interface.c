@@ -4,10 +4,14 @@
 FileType check_extension(Folder * fd, File * f) {
     int end = f->name_length - 1;
     if (end >= 3 && f->name[end] == 't' &&
-        f->name[end - 1] == 'x' && f->name[end - 2] == 't' && f->name[end - 3] == '.') return TXT;
+        f->name[end - 1] == 'x' && f->name[end - 2] == 't' && f->name[end - 3] == '.') return TXT_FILE;
     else if (end == 1 && f->name[end] == '.' && f->name[end - 1] == '.') return FOLDER;
     else if (end == 0 && f->name[end] == '.') return FOLDER; 
     else if (f->name[end] == 'c' && f->name[end - 1] == '.') return C_FILE;
+    else if (f->name_length >= 4 && f->name[end] == 'e' && f->name[end - 1] == 'x' &&
+             f->name[end - 2] == 'e' && f->name[end - 3] == '.') return EXE_FILE;
+    else if (f->name_length >= 3 && f->name[end] == 'y' 
+             && f->name[end - 1] == 'p' && f->name[end - 2] == '.') return PY_FILE;
     add_file_to_path(fd->path, f->name, f->name_length);
     DIR * dr = opendir(fd->path);
     remove_last_file(fd->path);
@@ -77,12 +81,18 @@ void print_directory(Folder * fd) {
                 set_console_color(BLUE);
                 break;
             }
-            case TXT: {
+            case TXT_FILE: {
                 set_console_color(GREEN);
                 break;
             }
             case C_FILE: {
                 set_console_color(RED); break;
+            }
+            case PY_FILE: {
+                set_console_color(YELLOW); break;
+            }
+            case EXE_FILE: {
+                set_console_color(VIOLET); break;
             }
         }
         printf(" %s", (fd->files + i)->name);
@@ -122,8 +132,19 @@ void add_file_to_path(char * path, char * name, int name_len) {
     //printf("\nadded - %s\n", path);
 }
 
-void execute(char * path) {
+void execute(FileType type,char  * path) {
     system("cls");
+    switch (type) {
+        case C_FILE: {
+            execute_c(path); break;
+        }
+    }
+    set_console_color(CYAN);
+    printf("\nPress any key to quit\n");
+    getch();
+}
+
+void execute_c(char * path) {
     char * command = (char *) malloc (512 * sizeof(char));
     for (int i = 0; i != 512; ++i) {
         command[i] = '\0';
@@ -144,8 +165,5 @@ void execute(char * path) {
     system(command);
     free(command);
     system("tmp.exe");
-    set_console_color(CYAN);
-    printf("\nPress any key to quit\n");
     system("del tmp.exe");
-    getch();
 }

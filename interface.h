@@ -9,7 +9,7 @@
 #define NUM_FILES 100
 
 typedef enum {
-    TXT, FOLDER, C_FILE, OTHER
+    TXT_FILE, FOLDER, C_FILE, PY_FILE, CPP_FILE, EXE_FILE, OTHER
 } FileType;
 
 typedef struct {
@@ -35,4 +35,6 @@ void print_directory(Folder * fd);
 void remove_last_file(char * path);
 Folder * reopen(Folder * fd, int * index);
 void add_file_to_path(char * path, char * name, int name_len);
+void execute(FileType type, char * path);
+void execute_c(char *);
 #endif

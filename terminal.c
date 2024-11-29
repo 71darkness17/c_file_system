@@ -1,23 +1,29 @@
 #include "terminal.h"
 #include "interface.h"
 // установка цвета печати в консоли
-void set_console_color(enum Color clr) {
+void set_console_color(Color clr) {
     HANDLE handle = GetStdHandle(STD_OUTPUT_HANDLE);
     switch (clr) {
         case (WHITE): {
             SetConsoleTextAttribute(handle, FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_RED); break;
         }
         case (RED): {
-            SetConsoleTextAttribute(handle, FOREGROUND_RED); break;
+            SetConsoleTextAttribute(handle, FOREGROUND_RED | FOREGROUND_INTENSITY); break;
         }
         case (BLUE): {
-            SetConsoleTextAttribute(handle, FOREGROUND_BLUE); break;
+            SetConsoleTextAttribute(handle, FOREGROUND_BLUE | FOREGROUND_INTENSITY); break;
         }
         case (GREEN): {
-            SetConsoleTextAttribute(handle, FOREGROUND_GREEN); break;
+            SetConsoleTextAttribute(handle, FOREGROUND_GREEN | FOREGROUND_INTENSITY); break;
         }
         case (CYAN): {
-            SetConsoleTextAttribute(handle, FOREGROUND_BLUE | FOREGROUND_GREEN); break;
+            SetConsoleTextAttribute(handle, FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_INTENSITY); break;
+        }
+        case (YELLOW): {
+            SetConsoleTextAttribute(handle, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_INTENSITY); break;
+        }
+        case (VIOLET): {
+            SetConsoleTextAttribute(handle, FOREGROUND_RED | FOREGROUND_BLUE | FOREGROUND_INTENSITY); break;
         }
     }
 }
