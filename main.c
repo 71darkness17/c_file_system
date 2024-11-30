@@ -31,15 +31,20 @@ void processing() {
                 break;
             }
             case 13: {
-                if ((fd->files + index)->type == FOLDER) fd = reopen(fd, &index);
-                else if ((fd->files + index)->type == C_FILE) {
-                    add_file_to_path(fd->path, (fd->files + index)->name, (fd->files + index)->name_length);
-                    execute((fd->files + index)->type, fd->path);
-                    remove_last_file(fd->path);
-                    system("cls");
-                    print_directory(fd);
-                    index = 0;
-                } 
+                switch ((fd->files + index)->type) {
+                    case FOLDER: {
+                        fd = reopen(fd, &index); break;
+                    }
+                    case C_FILE: case PY_FILE: {
+                        add_file_to_path(fd->path, (fd->files + index)->name, (fd->files + index)->name_length);
+                        execute((fd->files + index)->type, fd->path);
+                        remove_last_file(fd->path);
+                        system("cls");
+                        print_directory(fd);
+                        index = 0;
+                        break;
+                    }
+                }
                 break;
             }
         }

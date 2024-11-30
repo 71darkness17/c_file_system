@@ -132,11 +132,14 @@ void add_file_to_path(char * path, char * name, int name_len) {
     //printf("\nadded - %s\n", path);
 }
 
-void execute(FileType type,char  * path) {
+void execute(FileType type, char  * path) {
     system("cls");
     switch (type) {
         case C_FILE: {
             execute_c(path); break;
+        }
+        case PY_FILE: {
+            execute_py(path); break;
         }
     }
     set_console_color(CYAN);
@@ -166,4 +169,22 @@ void execute_c(char * path) {
     free(command);
     system("tmp.exe");
     system("del tmp.exe");
+}
+
+void execute_py(char * path) {
+    char * command = (char *) malloc (512 * sizeof(char));
+    for (int i = 0; i != 512; ++i) {
+        command[i] = '\0';
+    }
+    char first_part[] = "python ";
+    int index = 0;
+    for ( ; index != 7; ++index) {
+        command[index] = first_part[index];
+    }
+
+    for ( ;path[index - 7] != '\0'; ++index) {
+        command[index] = path[index - 7];
+    }
+    system(command);
+    free(command);
 }

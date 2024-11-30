@@ -37,4 +37,5 @@ Folder * reopen(Folder * fd, int * index);
 void add_file_to_path(char * path, char * name, int name_len);
 void execute(FileType type, char * path);
 void execute_c(char *);
+void execute_py(char *);
 #endif
